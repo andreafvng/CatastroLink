@@ -27,7 +27,7 @@ class HostAvailability(models.Model):
     host = models.OneToOneField(User, on_delete=models.CASCADE, related_name='availability')
     max_clients = models.IntegerField()
     is_available = models.BooleanField(default=True)
-    restrictions = models.TextField(black=True)
+    restrictions = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.host.username} - Available: {self.is_available}"
