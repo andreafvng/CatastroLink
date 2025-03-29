@@ -1,23 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import geomodels
 
 class User(AbstractUser):
-    ROLE_CHOICE =  [('client', 'Client'), ('host', 'Host')]
-    role = models.CharField(max_length=10, choices=ROLE_CHOICE)
+    ROLE_CHOICES = [('client', 'Client'), ('host', 'Host')]
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='client')
     family_size = models.IntegerField(default=1)
     pets = models.BooleanField(default=False)
     accessibility_needs = models.TextField(blank=True)
-    location = models.CharField(max_length=255)
+    latitude = models.FloatField()  
+    longitude = models.FloatField()
 
     def __str__(self):
         return f"{self.username} - {self.role}"
 
 class DisasterReport(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reports')
-    location = models.CharField(max_length=255)
     description = models.TextField()
     severity = models.CharField(max_length=20, choices=[('Low', 'Low'), ('Medium', 'Medium'), ('High', 'High')])
     timestamp = models.DateTimeField(auto_now_add=True)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
     def __str__(self):
         return f"Report by {self.client.username} - {self.severity}"

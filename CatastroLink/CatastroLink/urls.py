@@ -18,5 +18,5 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('check-disasters/', views.check_disaster_threshold, name='check_disasters'),
 ]
