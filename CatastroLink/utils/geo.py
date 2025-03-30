@@ -1,5 +1,6 @@
 import os
 from geopy.distance import geodesic
+from accounts.models import AppUser
 
 import requests
 
@@ -33,3 +34,22 @@ def filter_by_distance(reports, max_distance_km, n):
             clusters.append(close_reports)
 
     return clusters
+
+
+def filter_users_by_distance(lat, lon, max_distance_km):
+    # List to hold users within the distance range
+    close_users = []
+
+    # Loop through all users and check if they're within the given distance
+    for user in AppUser.objects.all():
+        user_location = (user.latitude, user.longitude)
+        input_location = (lat, lon)
+
+        # Calculate distance between the input location and the user's location
+        distance = geodesic(input_location, user_location).km
+
+        # If within the maximum distance, add to the result list
+        if distance <= max_distance_km:
+            close_users.append(user)
+
+    return close_users
