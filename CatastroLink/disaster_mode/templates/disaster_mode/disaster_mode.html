@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Disaster Mode{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">A disaster has been detected in your area.</h1>
+
+    <h1 class="text-center">Take action now.</h1>
+
+    <a href="{% url 'disaster_mode:seek_refuge' %}" class="btn btn-secondary">Seek Refuge</a>
+    <a href="{% url 'disaster_mode:become_host' %}" class="btn btn-secondary">Become a Host</a>
+
+
+{% endblock %}
