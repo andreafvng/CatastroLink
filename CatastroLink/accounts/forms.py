@@ -1,5 +1,6 @@
 from django import forms
-from django.contrib.auth.models import User
+
+from .models import AppUser
 
 
 class SimpleUserRegistrationForm(forms.ModelForm):
@@ -7,10 +8,13 @@ class SimpleUserRegistrationForm(forms.ModelForm):
     password_confirmation = forms.CharField(
         widget=forms.PasswordInput, label="Password confirmation"
     )
+    home_address = forms.CharField(
+        max_length=255, required=True, label="Home Address"
+    )
 
     class Meta:
-        model = User
-        fields = ["username"]  # Only include the username field
+        model = AppUser
+        fields = ["username", "home_address"]
 
     def clean_password_confirmation(self):
         password = self.cleaned_data.get("password")
