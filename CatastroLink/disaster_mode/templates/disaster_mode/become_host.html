@@ -3,5 +3,17 @@
 {% block title %}Become a Host{% endblock %}
 
 {% block content %}
-Accommodation Information
+<h2>Become a Host</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }} 
+            </div>
+            <button type="submit" class="btn btn-primary">Apply as Host</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
