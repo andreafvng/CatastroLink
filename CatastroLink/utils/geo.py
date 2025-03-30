@@ -36,7 +36,7 @@ def filter_by_distance(reports, max_distance_km, n):
     return clusters
 
 
-def filter_users_by_distance(lat, lon, max_distance_km):
+def filter_users_by_distance(lat, lon, low, high):
     # List to hold users within the distance range
     close_users = []
 
@@ -49,7 +49,7 @@ def filter_users_by_distance(lat, lon, max_distance_km):
         distance = geodesic(input_location, user_location).km
 
         # If within the maximum distance, add to the result list
-        if distance <= max_distance_km:
+        if low <= distance < high:
             close_users.append(user)
 
     return close_users

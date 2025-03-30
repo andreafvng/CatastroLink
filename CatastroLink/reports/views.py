@@ -8,6 +8,7 @@ from utils.geo import (
 
 from .forms import DisasterReportForm
 from .models import DisasterReport
+from disaster_mode.models import Accommodation
 
 
 def report_disaster(request):
@@ -52,15 +53,6 @@ def trigger_disaster_response():
 
     disaster_clusters = filter_by_distance(recent_reports, max_distance_km, n)
 
-    # to Andrea:
-    # if disaster_clusters is not an empty list, then there is a cluster in which
-    # to trigger a disaster response
-
-    # this means a list of lists of reports, since disasters can happen all
-    # around the world at the same time
-
-    # then it gets the list of users within that 10 km
-
     if disaster_clusters:
         print(
             f"Disaster response triggered with {len(disaster_clusters)} clusters."
@@ -71,21 +63,33 @@ def trigger_disaster_response():
             avg_lat = sum([report.lat for report in cluster]) / len(cluster)
             avg_lon = sum([report.lon for report in cluster]) / len(cluster)
 
-            print(f"Cluster average lat: {avg_lat}, lon: {avg_lon}")
+            # Get users within 0-5 km (host or client) and 5-10 km (hosts only)
+            hosts_or_client = filter_users_by_distance(avg_lat, avg_lon, 0, 5)
+            hosts_only = filter_users_by_distance(avg_lat, avg_lon, 5, 10)
 
-            # Now, filter users by distance from the average lat, lon
-            close_users = filter_users_by_distance(
-                avg_lat, avg_lon, max_distance_km
-            )
+            # For users within 0-5 km, create both host and client records
+            for user in hosts_or_client:
+                host_or_client(user, host=True)  # Create host entry
+                host_or_client(user, host=False)  # Create client entry
 
-            # these are the users that got past the filter of max_distance_km
-
-            # Logic to handle close_users goes here (e.g., notifying users, triggering alerts)
-            print(
-                f"Users within {max_distance_km} km of the disaster location:"
-            )
-            for user in close_users:
-                print(user.username)
+            # For users within 5-10 km, create only host records
+            for user in hosts_only:
+                host_or_client(user, host=True)  # Create host entry
 
     else:
         print("No disaster response needed.")
+
+
+def host_or_client(user, host):
+    # Create or update accommodation entry for the user as host or client
+    accommodation, created = Accommodation.objects.get_or_create(
+        user=user, host=host, matched=False
+    )
+
+    if not created:
+        # If the accommodation already exists, you may want to update some fields
+        accommodation.host = host
+        accommodation.save()
+
+    # Return the accommodation for further processing (if needed)
+    return accommodation

@@ -11,9 +11,9 @@ class Accommodation(models.Model):
     host = models.BooleanField(
         default=False
     )  # If True, user is a host; otherwise, a client
-    people = models.TextField(max_length=500)
-    pets = models.TextField(max_length=500)
-    accessibility = models.TextField(max_length=500)
+    people = models.TextField(max_length=500, null=True, blank=True)
+    pets = models.TextField(max_length=500, null=True, blank=True)
+    accessibility = models.TextField(max_length=500, null=True, blank=True)
     matched = models.BooleanField(default=False)
 
     # This field will store the matched accommodation (host-client pair)
