@@ -1,14 +1,15 @@
-from accounts.views import get_lat_lon_from_text
 from django.shortcuts import redirect, render
 
 from .forms import DisasterReportForm
 from .models import DisasterReport
 
+from utils.geo import get_lat_lon_from_text
+
 
 def report_disaster(request):
     if request.method == "POST":
         form = DisasterReportForm(request.POST)
-        
+
         if form.is_valid():
             address = form.cleaned_data["address"]
             lat, lon = get_lat_lon_from_text(address)
