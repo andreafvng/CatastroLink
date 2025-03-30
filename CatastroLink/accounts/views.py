@@ -1,27 +1,33 @@
-from django.shortcuts import render
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserRegistrationForm
+from django.shortcuts import redirect, render
+
+from .forms import SimpleUserRegistrationForm
 
 
 def register(request):
     if request.method == "POST":
-        form = UserRegistrationForm(request.POST)
+        form = SimpleUserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            password = form.cleaned_data.get("password")
-            user.set_password(password)
+            # Save the user
+            user = form.save(commit=False)
+            user.set_password(
+                form.cleaned_data["password"]
+            )  # Hash the password
             user.save()
 
-            # Log the user in after registration
+            # Log the user in
+            user = authenticate(
+                username=user.username, password=form.cleaned_data["password"]
+            )
             login(request, user)
+
             return redirect(
                 "home"
-            )  # Redirect to the home page or wherever you want
+            )  # Redirect to a home page or somewhere else after successful registration
     else:
-        form = UserRegistrationForm()
+        form = SimpleUserRegistrationForm()
+
     return render(request, "accounts/register.html", {"form": form})
 
 
