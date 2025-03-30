@@ -1,12 +1,91 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Report a Disaster{% endblock %}
+{% block title %}Report a Live Disaster - CatastroLink{% endblock %}
+
+{% block extra_css %}
+<style>
+    .disaster-report-section {
+        background-image: url("{% static 'images/background_form.png' %}");
+        background-size: cover;
+        background-position: center;
+        min-height: calc(100vh - 80px);
+        padding: 4rem 0 4rem 8rem; /* py-16 px-10 ml-32 equivalent */
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-    <h2>Report a Disaster</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-danger">Submit Report</button>
-    </form>
+<section class="disaster-report-section">
+    <div> <!-- Shift container -->
+        <!-- Back Link -->
+        <a href="{% url 'dashboard' %}" class="text-white text-lg mb-8 inline-block hover:underline">
+            ← back
+        </a>
+
+        <!-- Headline -->
+        <h1 class="text-4xl font-bold text-black mb-12" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">
+            Report a Live Disaster
+        </h1>
+
+        <!-- Form -->
+        <form method="post" class="max-w-xl space-y-10 text-white">
+            {% csrf_token %}
+            
+            <!-- What's Happening -->
+            <div>
+                <label class="text-xl font-semibold block mb-2 text-white">What's happening?</label>
+                <textarea name="description" rows="3" 
+                    placeholder="Tell us briefly about the disaster situation."
+                    class="w-full p-3 rounded-md border border-white text-black placeholder-gray-500 focus:outline-none"
+                    required></textarea>
+            </div>
+
+            <!-- Location -->
+            <div>
+                <label class="text-xl font-semibold block mb-2 text-white">What location is affected?</label>
+                <input type="text" name="location" 
+                    placeholder="Enter street address / city"
+                    class="w-full p-3 rounded-md border border-white text-black placeholder-gray-500 focus:outline-none"
+                    required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                class="mt-4 px-10 py-3 bg-black text-white text-lg font-semibold rounded-full hover:bg-gray-800 transition">
+                Send Report
+            </button>
+        </form>
+    </div>
+</section>
+
+<style>
+    /* Form Elements */
+    textarea, input[type="text"] {
+        background-color: rgba(255,255,255,0.9);
+    }
+    
+    /* Navbar Overrides */
+    .global-navbar {
+        background-color: rgba(127, 135, 169, 0.5);
+        backdrop-filter: blur(10px);
+    }
+    
+    .nav-buttons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .user-display {
+        color: white;
+        font-weight: 500;
+    }
+    
+    .user-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: white;
+    }
+</style>
 {% endblock %}
