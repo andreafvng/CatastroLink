@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-</head>
-<body>
-    <h1>Welcome to the Home Page</h1>
-    <p>This is the landing page for the site.</p>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Home Page</title>
+        {% load static %}
+        <!-- Link to the home page CSS file -->
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/home.css' %}"
+        />
+    </head>
+    <body>
+        <h1>Welcome to the Home Page</h1>
+        <p>This is the landing page for the site.</p>
+
+        <a href="{% url 'register' %}" class="button">Register</a>
+        <a href="{% url 'login' %}" class="button">Login</a>
+    </body>
 </html>
