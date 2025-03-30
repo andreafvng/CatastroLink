@@ -37,8 +37,14 @@
             <img src="{% static 'images/catastrolink_logo.png' %}" alt="CatastroLink Logo">
         </a>
         <div class="nav-buttons">
-            <a href="{% url 'accounts:login' %}" class="btn btn-login">Login</a>
-            <a href="{% url 'accounts:register' %}" class="btn btn-signup">Sign Up</a>
+            {% if user.is_authenticated %}
+                <!-- If the user is authenticated, show the logout button -->
+                <a href="{% url 'logout' %}" class="btn btn-login">Logout</a>
+            {% else %}
+                <!-- If the user is not authenticated, show the login and signup buttons -->
+                <a href="{% url 'accounts:login' %}" class="btn btn-login">Login</a>
+                <a href="{% url 'accounts:register' %}" class="btn btn-signup">Sign Up</a>
+            {% endif %}
         </div>
     </nav>
 

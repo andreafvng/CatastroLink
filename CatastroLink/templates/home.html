@@ -55,9 +55,29 @@
 
 <section class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title">CatastroLink</h1>
-        <p class="hero-subtitle">A <strong>disaster response</strong> solution made <strong>for, <br/> and by the community</strong></p>
-        <a href="{% url 'accounts:register' %}" class="cta-button">Join the Community</a>
+        {% if user.is_authenticated %}
+            {% if accommodation_entries %}
+                <h1 class="text-center">A disaster has been detected in your area.</h1>
+                <h1 class="text-center">Take action now.</h1>
+                {% for entry in accommodation_entries %}
+                    {% if entry.host %}
+                        <!-- If they are a host, show 'Become a Host' button -->
+                        <a href="{% url 'disaster_mode:become_host' %}" class="cta-button">Become a Host</a>
+                    {% else %}
+                        <!-- If they are a client, show 'Seek Refuge' button -->
+                        <a href="{% url 'disaster_mode:seek_refuge' %}" class="cta-button">Seek Refuge</a>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <h1 class="text-center">No natural disasters reported.</h1>
+            {% endif %}
+        {% else %}
+            <h1 class="hero-title">CatastroLink</h1>
+            <p class="hero-subtitle">A <strong>disaster response</strong> solution made <strong>for, <br/> and by the community</strong></p>
+            <!-- Default buttons if user is not logged in -->
+            <a href="{% url 'accounts:register' %}" class="cta-button">Join the Community</a>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
+
