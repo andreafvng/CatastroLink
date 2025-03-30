@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "reports",
-    "preparation"
+    "preparation",
+    "disaster_mode"
 ]
 
 MIDDLEWARE = [

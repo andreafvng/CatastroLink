@@ -10,5 +10,6 @@ urlpatterns = [
     path("disaster_alert/", disaster_alert_view, name="disaster_alert"),
     path("reports/", include("reports.urls")),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("preparation/", include("preparation.urls"))
+    path("preparation/", include("preparation.urls")),
+    path("disaster_mode/", include("disaster_mode.urls"))
 ]
