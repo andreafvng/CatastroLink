@@ -1,20 +1,150 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login - CatastroLink{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Login Section */
+    .login-section {
+        position: relative;
+        width: 100vw;
+        height: calc(100vh - 80px);
+        background-image: url("{% static 'images/background_hands.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<h2>Login</h2>
+<section class="login-section">
+    <!-- Back Link -->
+    <a href="{% url 'home' %}" class="back-link">
+        ← back
+    </a>
 
-<!-- Form inside a Bootstrap card for styling -->
-<div class="card">
-    <div class="card-body">
-        <form method="POST">
+    <!-- Heading -->
+    <div class="login-heading">
+        <h1>we're glad you're here!</h1>
+    </div>
+
+    <!-- Login Form Panel -->
+    <div class="login-form-container">
+        <form method="post">
             {% csrf_token %}
-            <div class="mb-3">
-                {{ form.as_p }}  <!-- Render the form as paragraphs -->
+            
+            <div class="form-group">
+                <label for="id_username">Username or Email</label>
+                <input type="text" name="username" id="id_username" class="form-input" required>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" class="form-input" required>
+            </div>
+            
+            <button type="submit" class="login-button">Login</button>
         </form>
     </div>
-</div>
+</section>
+
+<style>
+    /* Back Link */
+    .back-link {
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        color: white;
+        font-size: 1.125rem;
+        text-decoration: none;
+        z-index: 10;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    /* Heading */
+    .login-heading {
+        position: absolute;
+        top: 40%;
+        left: 6rem;
+        color: white;
+        z-index: 10;
+    }
+
+    .login-heading h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    /* Login Form */
+    .login-form-container {
+        position: absolute;
+        top: 25%;
+        right: 20rem;
+        background: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 20rem;
+        z-index: 10;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 0.5rem;
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 9999px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .login-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .login-form-container {
+            right: auto;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 20rem;
+        }
+        
+        .login-heading {
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+        }
+    }
+</style>
 {% endblock %}
