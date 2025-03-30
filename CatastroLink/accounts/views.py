@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 
 from .forms import SimpleUserRegistrationForm
+from CatastroLink.filter import get_users_near_disaster
 
 
 def get_lat_lon_from_text(address):
