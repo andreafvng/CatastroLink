@@ -23,3 +23,10 @@ class SimpleUserRegistrationForm(forms.ModelForm):
         if password != password_confirmation:
             raise forms.ValidationError("Passwords do not match.")
         return password_confirmation
+
+class UserTypeSelectionForm(forms.Form):
+    user_type = forms.ChoiceField(
+        choices=[('host', 'Host'), ('client', 'Client')],
+        widget=forms.RadioSelect,
+        label="Select your role"
+    )

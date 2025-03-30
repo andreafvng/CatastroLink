@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from utils.geo import get_lat_lon_from_text
+from .forms import UserTypeSelectionForm
+from .models import AppUser
 
 from .forms import SimpleUserRegistrationForm
 
@@ -55,3 +57,19 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, "accounts/login.html", {"form": form})
+
+
+def select_user_type(request, user_id):
+    user = AppUser.objects.get(id=user_id)
+
+    if request.method == "POST":
+        form = UserTypeSelectionForm(request.POST)
+        if form.is_valid():
+            # Save the user's choice in the user_type field
+            user.user_type = form.cleaned_data['user_type']
+            user.save()
+            return redirect('home')  # Redirect to home or another appropriate page
+    else:
+        form = UserTypeSelectionForm()
+
+    return render(request, "select_user_type.html", {"form": form, "user": user})

@@ -53,3 +53,15 @@ def filter_users_by_distance(lat, lon, max_distance_km):
             close_users.append(user)
 
     return close_users
+
+def group_users_by_type(users):
+    hosts = []
+    clients = []
+
+    for user in users:
+        if user.user_type == 'host':
+            hosts.append(user)
+        elif user.user_type == 'client':
+            clients.append(user)
+    
+    return hosts, clients

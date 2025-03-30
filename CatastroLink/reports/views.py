@@ -79,6 +79,11 @@ def trigger_disaster_response():
             )
 
             # these are the users that got past the filter of max_distance_km
+            for user in close_users:
+                if user.user_type == 'none':  # Prompt for user type selection
+                    # Redirect the user to the select_user_type view
+                    print(f"User {user.username} is being prompted to select a type.")
+                    return redirect('select_user_type', user_id=user.id)
 
             # Logic to handle close_users goes here (e.g., notifying users, triggering alerts)
             print(
@@ -89,3 +94,30 @@ def trigger_disaster_response():
 
     else:
         print("No disaster response needed.")
+
+
+def prompt_user_for_type(request, user_id):
+    user = AppUser.objects.get(id=user_id)
+    
+    # Only ask if the user is within the proximity of the disaster
+    if request.method == "POST":
+        user_type = request.POST.get('user_type')  # 'host' or 'client'
+        
+        if user_type in ['host', 'client']:
+            user.user_type = user_type  # Save the user's type
+            user.save()
+            return redirect('some_next_page')  # Redirect after saving the user type
+
+    return render(request, 'ask_user_type.html', {'user': user})
+
+
+def trigger_disaster_response_and_group_users():
+    # Filter users by distance (e.g., within 5km)
+    close_users = filter_users_by_distance(avg_lat, avg_lon, max_distance_km)
+    
+    # Now, group users by their user_type (host or client)
+    hosts, clients = group_users_by_type(close_users)
+
+    # You can now handle the hosts and clients as needed (e.g., notifying them, etc.)
+    print(f"Hosts: {hosts}")
+    print(f"Clients: {clients}")
