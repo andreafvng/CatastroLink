@@ -3,10 +3,20 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Welcome to the Home Page</h1>
-    <p class="text-center">This is the landing page for the site.</p>
+    {% if user.is_authenticated %}
+        <h1 class="text-center">Welcome, {{ user.username }}</h1>
 
-    <a href="{% url 'accounts:register' %}" class="btn btn-primary">Register</a>
-    <a href="{% url 'accounts:login' %}" class="btn btn-secondary">Login</a>
-    <a href="{% url 'reports:report' %}" class="btn btn-secondary">Report</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        <a href="{% url 'reports:report' %}" class="btn btn-secondary">Report</a>
+        <a href="{% url 'reports:report' %}" class="btn btn-secondary">Report</a>
+    {% else %}
+        <h1 class="text-center">Welcome to the Home Page</h1>
+        <p class="text-center">This is the landing page for the site.</p>
+
+        <p>User Authenticated: {{ user.is_authenticated }}</p>
+        <p>User name: {{ user.username }}</p>
+
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary">Register</a>
+        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">Login</a>
+    {% endif %}
 {% endblock %}
